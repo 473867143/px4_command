@@ -210,6 +210,9 @@ class command_to_mavros
     //printf the geo fence
     void show_geo_fence();
 
+    //Printf the amov
+    void printf_amov();
+
     private:
 
         ros::NodeHandle command_nh;
@@ -588,6 +591,29 @@ void command_to_mavros::prinft_drone_state2(float current_time)
     cout << "Attitude [R P Y] : " << Euler_fcu[0] * 180/M_PI <<" [deg] "<<Euler_fcu[1] * 180/M_PI << " [deg] "<< Euler_fcu[2] * 180/M_PI<<" [deg] "<<endl;
     cout << "Att_target [R P Y] : " << Euler_fcu_target[0] * 180/M_PI <<" [deg] "<<Euler_fcu_target[1] * 180/M_PI << " [deg] "<< Euler_fcu_target[2] * 180/M_PI<<" [deg] "<<endl;
 
+}
+
+
+void command_to_mavros::printf_amov()
+{
+    cout << "****************************    AMOVLAB   **********************************" <<endl;
+    cout << "*                                                                           " <<endl;
+    cout << "*   Copyright (c) 2016-2019 AmovLab Development Team. All rights reserved.  " <<endl;
+    cout << "*                                                                           " <<endl;
+    cout << "****************************************************************************" <<endl;
+    cout << "                                                                            " <<endl;
+    cout << "*    Welcome to use our company's products，If you have any questions about " <<endl;
+    cout << "*    this product,Please visit our website and ask questions.               " <<endl;
+    cout << "*    URL : www.amovauto.com & bbs.amovauto.com                              " <<endl;
+    cout << "                                                                            " <<endl;
+    cout << "                      Software License Declaration                          " <<endl;
+    cout << "*    Any one,including our customer, agent and authorized programmer,cannot " <<endl;
+    cout << "*   share this document to the third party without the agreement of AmovLab." <<endl;
+    cout << "*                                                                           " <<endl;
+    cout << "*    Any problem cannot solved in the procedure of programming should be    " <<endl;
+    cout << "*    feedback to our bbs in time.                                           " <<endl;
+    cout << "*                                                                           " <<endl;
+    cout << "****************************    AMOVLAB   **********************************" <<endl;
 }
 
 }

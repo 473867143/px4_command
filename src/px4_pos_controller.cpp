@@ -81,6 +81,8 @@ int main(int argc, char **argv)
 
     command_to_mavros pos_controller;
 
+    pos_controller.printf_amov();
+
     pos_controller.printf_param();
 
     pos_controller.show_geo_fence();
