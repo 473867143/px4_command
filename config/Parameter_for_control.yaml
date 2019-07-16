@@ -11,15 +11,15 @@ ppn_kx : 0.2
 ppn_ky : 0.2
 ppn_kz : 0.2
 
-noise_a_xy : 0.0
-noise_b_xy : 0.00
+disturbance_a_xy : 0.0
+disturbance_b_xy : 0.00
 
-noise_a_z : 0.0
-noise_b_z : 0.00
-noise_T : 1.0
+disturbance_a_z : 0.0
+disturbance_b_z : 0.00
+disturbance_T : 1.0
 
-noise_start_time : 100.0
-noise_end_time : 30.0
+disturbance_start_time : 100.0
+disturbance_end_time : 30.0
 
 ## parameter for px4_pos_estimator.cpp
 pos_estimator:

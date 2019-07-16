@@ -54,7 +54,7 @@ class Circle_Trajectory
         void printf_result(px4_command::TrajectoryPoint& Circle_trajectory);
 
         //Circle_Trajectory Calculation [Input: time_from_start; Output: Circle_trajectory;]
-        void Circle_trajectory_generation(float time_from_start, px4_command::TrajectoryPoint& Circle_trajectory);
+        px4_command::TrajectoryPoint Circle_trajectory_generation(float time_from_start);
 
     private:
 
@@ -62,8 +62,9 @@ class Circle_Trajectory
 };
 
 
-void Circle_Trajectory::Circle_trajectory_generation(float time_from_start, px4_command::TrajectoryPoint& Circle_trajectory)
+px4_command::TrajectoryPoint Circle_Trajectory::Circle_trajectory_generation(float time_from_start)
 {
+    px4_command::TrajectoryPoint Circle_trajectory;
     float omega;
     if( radius != 0)
     {
@@ -108,6 +109,8 @@ void Circle_Trajectory::Circle_trajectory_generation(float time_from_start, px4_
     Circle_trajectory.yaw_ref = 0;
     // Circle_trajectory.yaw_rate_ref = 0;
     // Circle_trajectory.yaw_acceleration_ref = 0;
+
+    return Circle_trajectory;
 }
 
 

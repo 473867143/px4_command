@@ -161,7 +161,7 @@ px4_command::ControlOutput pos_controller_passivity::pos_controller(
     // 计算误差项
     Eigen::Vector3f pos_error;
     
-    px4_command_utils::cal_pos_error(_DroneState, _Reference_State, pos_error);
+    pos_error = px4_command_utils::cal_pos_error(_DroneState, _Reference_State);
 
     // 误差项限幅
     for (int i=0; i<3; i++)

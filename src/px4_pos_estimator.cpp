@@ -57,7 +57,7 @@
 #include <sensor_msgs/Range.h>
 #include <px4_command/DroneState.h>
 #include <LowPassFilter.h>
-
+#include <px4_command_utils.h>
 using namespace std;
 //---------------------------------------相关参数-----------------------------------------------
 int flag_use_laser_or_vicon;                               //0:使用mocap数据作为定位数据 1:使用laser数据作为定位数据
@@ -264,12 +264,12 @@ int main(int argc, char **argv)
 
         Eigen::Vector3d random;
 
-        for (int i=0;i<3;i++)
-        {
-            //if a = 0 b =0, noise = [-1,1]
-            random[i] = noise_a * 2 * (((float)(rand() % 100))/100 - 0.5 )  + noise_b;
-        }
+        // 先生成随机数
+        random[0] = px4_command_utils::random_num(noise_a, noise_b);
+        random[1] = px4_command_utils::random_num(noise_a, noise_b);
+        random[2] = px4_command_utils::random_num(noise_a, noise_b);
 
+        // 低通滤波
         random[0] = LPF_x.apply(random[0], 0.01);
         random[1] = LPF_y.apply(random[1], 0.01);
         random[2] = LPF_z.apply(random[2], 0.01);

@@ -45,23 +45,25 @@ using namespace std;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>变量声明<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 px4_command::ControlCommand Command_Now;                      //无人机当前执行命令
 px4_command::ControlCommand Command_Last;                     //无人机上一条执行命令
-px4_command::ControlCommand Command_to_gs;
-px4_command::DroneState _DroneState;                         //无人机状态量
+px4_command::ControlCommand Command_to_gs;                    //发送至地面站的指令
+px4_command::DroneState _DroneState;                          //无人机状态量
 Eigen::Vector3d throttle_sp;
 px4_command::ControlOutput _ControlOutput;
 px4_command::AttitudeReference _AttitudeReference;           //位置控制器输出，即姿态环参考量
 float cur_time;
-px4_command::Topic_for_log _Topic_for_log;
+px4_command::Topic_for_log _Topic_for_log;                  //用于日志记录的topic
 
 float Takeoff_height;                                       //起飞高度
 float Disarm_height;                                        //自动上锁高度
 float Use_accel;                                            // 1 for use the accel command
 int Flag_printf;
-float noise_a_xy,noise_b_xy;
-float noise_a_z,noise_b_z;
-float noise_T;
-float noise_start_time;
-float noise_end_time;
+
+
+float disturbance_a_xy,disturbance_b_xy;
+float disturbance_a_z,disturbance_b_z;
+float disturbance_T;
+float disturbance_start_time;
+float disturbance_end_time;
 // For PPN landing - Silas
 Eigen::Vector3d pos_des_prev;
 Eigen::Vector3d vel_command;
@@ -76,7 +78,6 @@ Eigen::Vector2f geo_fence_y;
 Eigen::Vector2f geo_fence_z;
 
 Eigen::Vector3d Takeoff_position = Eigen::Vector3d(0.0,0.0,0.0);
-Eigen::Vector3d pos_drone_mocap;                             //无人机当前位置 (vicon)
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>函数声明<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 int check_failsafe();
 void printf_param();
@@ -84,6 +85,7 @@ void printf_param();
 void Command_cb(const px4_command::ControlCommand::ConstPtr& msg)
 {
     Command_Now = *msg;
+    
     // 无人机一旦接受到Land指令，则会屏蔽其他指令
     if(Command_Last.Mode == command_to_mavros::Land)
     {
@@ -96,7 +98,6 @@ void Command_cb(const px4_command::ControlCommand::ConstPtr& msg)
         Command_Now.Mode = command_to_mavros::Land;
     }
 }
-
 
 void drone_state_cb(const px4_command::DroneState::ConstPtr& msg)
 {
@@ -128,15 +129,15 @@ int main(int argc, char **argv)
     nh.param<float>("Use_accel", Use_accel, 0.0);
     nh.param<int>("Flag_printf", Flag_printf, 0.0);
 
-    nh.param<float>("noise_a_xy", noise_a_xy, 0.5);
-    nh.param<float>("noise_b_xy", noise_b_xy, 0.0);
+    nh.param<float>("disturbance_a_xy", disturbance_a_xy, 0.5);
+    nh.param<float>("disturbance_b_xy", disturbance_b_xy, 0.0);
 
-    nh.param<float>("noise_a_z", noise_a_z, 0.5);
-    nh.param<float>("noise_b_z", noise_b_z, 0.0);
-    nh.param<float>("noise_T", noise_T, 0.0);
+    nh.param<float>("disturbance_a_z", disturbance_a_z, 0.5);
+    nh.param<float>("disturbance_b_z", disturbance_b_z, 0.0);
+    nh.param<float>("disturbance_T", disturbance_T, 0.0);
 
-        nh.param<float>("noise_start_time", noise_start_time, 5.0);
-    nh.param<float>("noise_end_time", noise_end_time, 10.0);
+    nh.param<float>("disturbance_start_time", disturbance_start_time, 5.0);
+    nh.param<float>("disturbance_end_time", disturbance_end_time, 10.0);
 
     nh.param<float>("ppn_kx", ppn_kx, 0.0);
     nh.param<float>("ppn_ky", ppn_ky, 0.0);
@@ -156,9 +157,9 @@ int main(int argc, char **argv)
     LowPassFilter LPF_y;
     LowPassFilter LPF_z;
 
-    LPF_x.set_Time_constant(noise_T);
-    LPF_y.set_Time_constant(noise_T);
-    LPF_z.set_Time_constant(noise_T);
+    LPF_x.set_Time_constant(disturbance_T);
+    LPF_y.set_Time_constant(disturbance_T);
+    LPF_z.set_Time_constant(disturbance_T);
 
     // 用于与mavros通讯的类，通过mavros发送控制指令至飞控【本程序->mavros->飞控】
     command_to_mavros _command_to_mavros;
@@ -678,7 +679,7 @@ int main(int argc, char **argv)
 
             time_trajectory = time_trajectory + dt;
 
-            _Circle_Trajectory.Circle_trajectory_generation(time_trajectory, Command_to_gs.Reference_State);
+            Command_to_gs.Reference_State = _Circle_Trajectory.Circle_trajectory_generation(time_trajectory);
 
             //_Circle_Trajectory.printf_result(Command_to_gs.Reference_State);
 
@@ -699,25 +700,27 @@ int main(int argc, char **argv)
                 _ControlOutput = pos_controller_ne.pos_controller(_DroneState, Command_to_gs.Reference_State, dt);
             }
 
+            // 输入干扰
             Eigen::Vector3d random;
 
+            // 先生成随机数
+            random[0] = px4_command_utils::random_num(disturbance_a_xy, disturbance_b_xy);
+            random[1] = px4_command_utils::random_num(disturbance_a_xy, disturbance_b_xy);
+            random[2] = px4_command_utils::random_num(disturbance_a_z, disturbance_b_z);
 
-            random[0] = noise_a_xy * 2 * (((float)(rand() % 100))/100 - 0.5) + noise_b_xy;
-            random[1] = noise_a_xy * 2 * (((float)(rand() % 100))/100 - 0.5) + noise_b_xy;
-            random[2] = noise_a_z * 2 * (((float)(rand() % 100))/100 - 0.5 ) + noise_b_z;
-
+            // 低通滤波
             random[0] = LPF_x.apply(random[0], 0.02);
             random[1] = LPF_y.apply(random[1], 0.02);
             random[2] = LPF_z.apply(random[2], 0.02);
 
-            if(time_trajectory>noise_start_time && time_trajectory<noise_end_time)
+            if(time_trajectory>disturbance_start_time && time_trajectory<disturbance_end_time)
             {
+                //应用输入干扰信号
                 _ControlOutput.Throttle[0] = _ControlOutput.Throttle[0] + random[0];
                 _ControlOutput.Throttle[1] = _ControlOutput.Throttle[1] + random[1];
                 _ControlOutput.Throttle[2] = _ControlOutput.Throttle[2] + random[2];
             }
 
-            
             throttle_sp[0] = _ControlOutput.Throttle[0];
             throttle_sp[1] = _ControlOutput.Throttle[1];
             throttle_sp[2] = _ControlOutput.Throttle[2];
@@ -732,10 +735,11 @@ int main(int argc, char **argv)
                 _command_to_mavros.send_attitude_setpoint(_AttitudeReference);            
             }
             
-            // Quit 
+            // Quit  悬停于最后一个目标点
             if (time_trajectory >= _Circle_Trajectory.time_total)
             {
-                Command_Now.Mode = command_to_mavros::Hold;
+                Command_Now.Mode = command_to_mavros::Move_ENU;
+                Command_Now.Reference_State = Command_to_gs.Reference_State;
             }
 
             break;
@@ -770,6 +774,7 @@ int main(int argc, char **argv)
 
             // 打印位置控制器输出结果
             px4_command_utils::prinft_attitude_reference(_AttitudeReference);
+
         }else if(((int)(cur_time*10) % 50) == 0)
         {
             cout << "px4_pos_controller is running for :" << cur_time << " [s] "<<endl;
@@ -813,15 +818,15 @@ void printf_param()
     cout << "geo_fence_z : "<< geo_fence_z[0] << " [m]  to  "<<geo_fence_z[1] << " [m]"<< endl;
     cout << "ppn_kx: "<< ppn_kx<<" [m] "<<endl;
 
-    cout << "noise_a_xy: "<< noise_a_xy<<" [m] "<<endl;
-    cout << "noise_b_xy: "<< noise_b_xy<<" [m] "<<endl;
+    cout << "disturbance_a_xy: "<< disturbance_a_xy<<" [m] "<<endl;
+    cout << "disturbance_b_xy: "<< disturbance_b_xy<<" [m] "<<endl;
 
-    cout << "noise_a_z: "<< noise_a_z<<" [m] "<<endl;
-    cout << "noise_b_z: "<< noise_b_z<<" [m] "<<endl;
-    cout << "noise_T: "<< noise_T<<" [m] "<<endl;
+    cout << "disturbance_a_z: "<< disturbance_a_z<<" [m] "<<endl;
+    cout << "disturbance_b_z: "<< disturbance_b_z<<" [m] "<<endl;
+    cout << "disturbance_T: "<< disturbance_T<<" [m] "<<endl;
 
-    cout << "noise_start_time: "<< noise_start_time<<" [s] "<<endl;
-    cout << "noise_end_time: "<< noise_end_time<<" [s] "<<endl;
+    cout << "disturbance_start_time: "<< disturbance_start_time<<" [s] "<<endl;
+    cout << "disturbance_end_time: "<< disturbance_end_time<<" [s] "<<endl;
     
     
 

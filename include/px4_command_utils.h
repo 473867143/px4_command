@@ -197,8 +197,10 @@ void rotation_yaw(float yaw_angle, float body_frame[2], float enu_frame[2])
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 控 制 辅 助 函 数 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
 //计算位置误差
-void cal_pos_error(const px4_command::DroneState& _DroneState, const px4_command::TrajectoryPoint& _Reference_State, Eigen::Vector3f& pos_error)
+Eigen::Vector3f cal_pos_error(const px4_command::DroneState& _DroneState, const px4_command::TrajectoryPoint& _Reference_State)
 {
+    Eigen::Vector3f pos_error;
+
     for (int i=0; i<3; i++)
     {
         pos_error[i] = _Reference_State.position_ref[i] - _DroneState.position[i];
@@ -217,16 +219,20 @@ void cal_pos_error(const px4_command::DroneState& _DroneState, const px4_command
     {
         pos_error[3] = 0;
     }
+
+    return pos_error;
 }
 
 //计算速度误差
-void cal_vel_error(const px4_command::DroneState& _DroneState, const px4_command::TrajectoryPoint& _Reference_State, Eigen::Vector3f& vel_error)
+Eigen::Vector3f cal_vel_error(const px4_command::DroneState& _DroneState, const px4_command::TrajectoryPoint& _Reference_State)
 {
+    Eigen::Vector3f vel_error;
     for (int i=0; i<3; i++)
     {
         vel_error[i] = _Reference_State.velocity_ref[i] - _DroneState.velocity[i];
     }
 
+    return vel_error;
 }
 
 Eigen::Vector3d accelToThrust(const Eigen::Vector3d& accel_sp, float mass, float tilt_max)
@@ -352,6 +358,18 @@ px4_command::AttitudeReference ThrottleToAttitude(const Eigen::Vector3d& thr_sp,
     _AttitudeReference.desired_attitude[2] = att_sp[2]; 
 
     return _AttitudeReference;
+}
+
+//random number Generation
+//if a = 0 b =0, random_num = [-1,1]
+//rand函数，C语言中用来产生一个随机数的函数
+float random_num(float a, float b)
+{
+    float random_num;
+    
+    random_num = a * 2 * (((float)(rand() % 100))/100 - 0.5) + b;
+
+    return random_num;
 }
 
 }
