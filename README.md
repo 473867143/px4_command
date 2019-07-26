@@ -75,7 +75,7 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
 # 远程桌面
 
-推荐使用[nomachine](https://www.nomachine.com)作为远程桌面使用。
+推荐使用[nomachine](https://www.nomachine.com)作为远程桌面。
 
 # 关于作者
 
