@@ -72,6 +72,15 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
    本功能包中所有变量均为 **ENU** 坐标系（同Mavros，异于PX4固件）
 
   >  MAVROS does translate Aerospace NED frames, used in FCUs to ROS ENU frames and vice-versa. For translate airframe related data we simply apply rotation 180° about ROLL (X) axis. For local we apply 180° about ROLL (X) and 90° about YAW (Z) axes
+  
+## PX4固件及参数
+
+请使用提供代码中提供的PX4固件 - [firmware](https://github.com/potato77/px4_command/tree/master/firmware "firmware")
+
+SYS_COMPANION参数设置为Companion（921600）。
+
+若需要使用外部定位，则参数EKF2_AID_MASK设为24（默认为1），EKF2_HGT_MODE设置为VISION（默认为气压计）。
+
 
 # 远程桌面
 
