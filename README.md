@@ -73,6 +73,10 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
   >  MAVROS does translate Aerospace NED frames, used in FCUs to ROS ENU frames and vice-versa. For translate airframe related data we simply apply rotation 180° about ROLL (X) axis. For local we apply 180° about ROLL (X) and 90° about YAW (Z) axes
 
+# 远程桌面
+
+推荐使用[nomachine](https://www.nomachine.com)作为远程桌面使用。
+
 # 关于作者
 
 阿木实验室科研无人机技术负责人、Mavros培训课程主讲老师、北理工博士
