@@ -1,56 +1,43 @@
 # px4_command
-Send command to PX4 using Mavros package
 
+# 简介
 
-# Installation
+px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项目，旨在为PX4开发者提供更加简洁快速的开发体验。目前已集成无人机外环控制器修改、目标追踪及避障等上层开发代码，后续将陆续推出涵盖任务决策、路径规划、滤波导航、单/多机控制等无人机科研及开发领域的功能。
 
-1. Install the mavros packgae by Binary installation
+# 安装
+1. 通过二进制的方法安装Mavros功能包
    
-    Please ref to: https://github.com/mavlink/mavros
+    请参考: https://github.com/mavlink/mavros
     
-    If you has install the mavros package by source code. Plaese deleat it firstly.
-   
-2. Create a new ros space called "px4_ws" in your home folder
-  
+   如果你已经使用源码的方式安装过Mavros功能包，请先将其删除。
+
+2. 在home目录下创建一个名为 "px4_ws" 的工作空间
+
     `mkdir -p ~/px4_ws/src`
   
     `cd ~/px4_ws/src`
   
     `catkin_init_workspace`
     
-    Please source manually, open a new terminal
+      大部分时候，需要手动进行source，打开一个新终端 
     
     `gedit .bashrc`  
     
-    Add the path `source /home/$(your computer name)/px4_ws/devel/setup.bash` in the end of the bashrc.txt file
-
-3. Git clone the px4_command package
+    在打开的`bashrc.txt`文件中添加 `source /home/$(your computer name)/px4_ws/devel/setup.bash`
+ 
+ 3. 下载并编译 `px4_command` 功能包
     
     `cd ~/px4_ws/src`
-	
-    download from gitlab repository
-    
-    `git clone http://gitlab.amovauto.com/amovlab/px4_command`
-    
-    download from github repository
 
     `git clone https://github.com/potato77/px4_command`
     
     `cd ..`
     
     `catkin_make`
-    
-# Coordinate frames
 
-   Here we are using **ENU** frames.
+# 坐标系说明
+   
+   本功能包中所有变量均为 **ENU** 坐标系（同Mavros，异于PX4固件）
 
   >  MAVROS does translate Aerospace NED frames, used in FCUs to ROS ENU frames and vice-versa. For translate airframe related data we simply apply rotation 180° about ROLL (X) axis. For local we apply 180° about ROLL (X) and 90° about YAW (Z) axes
-
-# Branch
-
-fsc_lab branch is used for fsc_lab quadrotor experiment.
-    
-Use this command to switch to fsc_lab branch
-
-`git checkout fsc_lab`
 
