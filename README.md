@@ -67,9 +67,16 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 > 2、功能包中还包含一些简易滤波及测试小代码，此处不作说明，可自行查阅。
 
 
-# 坐标系说明
+## 坐标系说明
    
    本功能包中所有变量均为 **ENU** 坐标系（同Mavros，异于PX4固件）
 
   >  MAVROS does translate Aerospace NED frames, used in FCUs to ROS ENU frames and vice-versa. For translate airframe related data we simply apply rotation 180° about ROLL (X) axis. For local we apply 180° about ROLL (X) and 90° about YAW (Z) axes
 
+# 关于作者
+
+阿木实验室科研无人机技术负责人、Mavros培训课程主讲老师、北理工博士
+
+对任何与四旋翼无人机有关的话题感兴趣，欢迎交流。
+
+个人微信号：qyp0210
