@@ -70,7 +70,11 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
 <iframe src="//player.bilibili.com/player.html?aid=60648116&cid=105559062&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
-[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://player.bilibili.com/player.html?aid=60648116&cid=105559062&page=1)
+
+<video id="video" controls="" preload="none" poster="http://media.w3.org/2010/05/sintel/poster.png">
+  <source id="mp4" src="http://player.bilibili.com/player.html?aid=60648116&cid=105559062&page=1" type="video/mp4">
+</video>
+
 
 
 
