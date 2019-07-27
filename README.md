@@ -53,7 +53,7 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 - 控制逻辑主程序 [px4_pos_controller.cpp](https://github.com/potato77/px4_command/blob/master/src/px4_pos_controller.cpp "px4_pos_controller.cpp")
 - 地面站（需配合ROS多机使用） [ground_station.cpp](https://github.com/potato77/px4_command/blob/master/src/ground_station.cpp "ground_station.cpp") 
 - 自主降落 [autonomous_landing.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/autonomous_landing.cpp "autonomous_landing.cpp")
--  简易避障 [collision_avoidance.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance.cpp "collision_avoidance.cpp")
+- 简易避障 [collision_avoidance.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance.cpp "collision_avoidance.cpp")
 - 双目简易避障 [collision_avoidance_streo.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance_streo.cpp "collision_avoidance_streo.cpp")
 - 编队飞行（目前仅支持gazebo仿真）[formation_control_sitl.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/formation_control_sitl.cpp "formation_control_sitl.cpp")
 - 负载投掷 [payload_drop.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/payload_drop.cpp "payload_drop.cpp")
@@ -68,16 +68,13 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
 [自主降落](https://www.bilibili.com/video/av60648116/)
 
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nJKs_PJEWTA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-
-
 [负载投掷](https://www.bilibili.com/video/av55037908/)
 
-<iframe width="600" height="400" src="//player.bilibili.com/player.html?aid=55037908&cid=96245665&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+[简易避障、目标追踪](https://www.bilibili.com/video/av60648886/)
 
+[外环控制器修改](https://www.bilibili.com/video/av60963113/)
+
+[内环控制器修改（PX4固件））](https://www.bilibili.com/video/av60962814/)
 
 ## 坐标系说明
    
