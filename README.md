@@ -74,7 +74,7 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
 [外环控制器修改](https://www.bilibili.com/video/av60963113/)
 
-[内环控制器修改（PX4固件））](https://www.bilibili.com/video/av60962814/)
+[内环控制器修改（PX4固件）](https://www.bilibili.com/video/av60962814/)
 
 ## 坐标系说明
    
