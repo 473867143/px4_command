@@ -49,8 +49,6 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
   [pos_controller_NE.h](https://github.com/potato77/px4_command/blob/master/include/pos_controller_NE.h "pos_controller_NE.h")
   其中，串级PID为仿写PX4中位置控制器、Passivity+UDE为无需速度反馈的位置控制器、NE+UDE在速度测量有噪声时由于其他控制器。
 
-  对比视频
-
 - 外部定位实现 [px4_pos_estimator.cpp](https://github.com/potato77/px4_command/blob/master/src/px4_pos_estimator.cpp "px4_pos_estimator.cpp")
 - 控制逻辑主程序 [px4_pos_controller.cpp](https://github.com/potato77/px4_command/blob/master/src/px4_pos_controller.cpp "px4_pos_controller.cpp")
 - 地面站（需配合ROS多机使用） [ground_station.cpp](https://github.com/potato77/px4_command/blob/master/src/ground_station.cpp "ground_station.cpp") 
@@ -65,6 +63,16 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 > 说明：
 > 1、其中自主降落、目标追踪、双目简易避障需配合vision部分代码使用。
 > 2、功能包中还包含一些简易滤波及测试小代码，此处不作说明，可自行查阅。
+
+## 视频演示
+
+[自主降落](https://www.bilibili.com/video/av60648116/)
+
+<iframe src="//player.bilibili.com/player.html?aid=60648116&cid=105559062&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+[负载投掷](https://www.bilibili.com/video/av55037908/)
+
+<iframe width="600" height="400" src="//player.bilibili.com/player.html?aid=55037908&cid=96245665&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 
 ## 坐标系说明
