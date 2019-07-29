@@ -90,6 +90,10 @@ SYS_COMPANION参数设置为Companion（921600）。
 
 若需要使用外部定位，则参数EKF2_AID_MASK设为24（默认为1），EKF2_HGT_MODE设置为VISION（默认为气压计）。
 
+## 其他教程
+
+[随意写写](https://github.com/potato77/Tech_Blog)
+
 
 # 远程桌面
 
