@@ -96,6 +96,12 @@ SYS_COMPANION参数设置为Companion（921600）。
 
 [随意写写](https://github.com/potato77/Tech_Blog)
 
+## 多机Gazebo仿真
+
+多机仿真前，请确保PX4固件能够顺利运行单机及双机仿真例程。
+
+请先将该文件[iris_3](https://github.com/potato77/px4_command/blob/master/src/Application/iris_3)放置于PX4固件Firmware/posix-configs/SITL/init/ekf2/目录下（固件版本 v1.8.2），然后运行脚本[sitl_gazebo_formation](https://github.com/potato77/px4_command/blob/master/sh/sh_for_simulation/sitl_gazebo_formation.sh)即可。
+
 
 # 远程桌面
 
