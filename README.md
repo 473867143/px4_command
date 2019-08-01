@@ -37,6 +37,8 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 
 # 项目总览
 
+# ![未命名表单](https://i.imgur.com/Au69Gps.png)
+
  - 读取飞控状态 [state_from_mavros.h](https://github.com/potato77/px4_command/blob/master/include/state_from_mavros.h "state_from_mavros.h")
 
  - 发送控制指令至飞控 [command_to_mavros.h](https://github.com/potato77/px4_command/blob/master/include/command_to_mavros.h "command_to_mavros.h")
@@ -49,13 +51,11 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
   [pos_controller_NE.h](https://github.com/potato77/px4_command/blob/master/include/pos_controller_NE.h "pos_controller_NE.h")
   其中，串级PID为仿写PX4中位置控制器、Passivity+UDE为无需速度反馈的位置控制器、NE+UDE在速度测量有噪声时由于其他控制器。
 
-  对比视频
-
 - 外部定位实现 [px4_pos_estimator.cpp](https://github.com/potato77/px4_command/blob/master/src/px4_pos_estimator.cpp "px4_pos_estimator.cpp")
 - 控制逻辑主程序 [px4_pos_controller.cpp](https://github.com/potato77/px4_command/blob/master/src/px4_pos_controller.cpp "px4_pos_controller.cpp")
 - 地面站（需配合ROS多机使用） [ground_station.cpp](https://github.com/potato77/px4_command/blob/master/src/ground_station.cpp "ground_station.cpp") 
 - 自主降落 [autonomous_landing.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/autonomous_landing.cpp "autonomous_landing.cpp")
--  简易避障 [collision_avoidance.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance.cpp "collision_avoidance.cpp")
+- 简易避障 [collision_avoidance.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance.cpp "collision_avoidance.cpp")
 - 双目简易避障 [collision_avoidance_streo.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/collision_avoidance_streo.cpp "collision_avoidance_streo.cpp")
 - 编队飞行（目前仅支持gazebo仿真）[formation_control_sitl.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/formation_control_sitl.cpp "formation_control_sitl.cpp")
 - 负载投掷 [payload_drop.cpp](https://github.com/potato77/px4_command/blob/master/src/Application/payload_drop.cpp "payload_drop.cpp")
@@ -66,6 +66,17 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 > 1、其中自主降落、目标追踪、双目简易避障需配合vision部分代码使用。
 > 2、功能包中还包含一些简易滤波及测试小代码，此处不作说明，可自行查阅。
 
+## 视频演示
+
+[自主降落](https://www.bilibili.com/video/av60648116/)
+
+[负载投掷](https://www.bilibili.com/video/av55037908/)
+
+[简易避障、目标追踪](https://www.bilibili.com/video/av60648886/)
+
+[外环控制器修改  NE+UDE](https://www.bilibili.com/video/av60963113/) 及 [外环控制器修改 Passivity-based UDE](https://www.bilibili.com/video/av60979252/)
+
+[内环控制器修改（PX4固件）](https://www.bilibili.com/video/av60962814/)
 
 ## 坐标系说明
    
@@ -80,6 +91,10 @@ px4_command功能包是一个基于PX4开源固件及Mavros功能包的开源项
 SYS_COMPANION参数设置为Companion（921600）。
 
 若需要使用外部定位，则参数EKF2_AID_MASK设为24（默认为1），EKF2_HGT_MODE设置为VISION（默认为气压计）。
+
+## 其他教程
+
+[随意写写](https://github.com/potato77/Tech_Blog)
 
 
 # 远程桌面
