@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="uav1">
+		<arg name="ID" value="1"/>
+		<!-- vrpn_client_ros -->
+		<include file="$(find vrpn_client_ros)/launch/sample.launch">
+		     <arg name="server" value="192.168.1.230"/>
+		</include>
+
+		<!-- MAVROS -->
+		<include file="$(find mavros)/launch/px4.launch">
+		    <arg name="fcu_url" value="/dev/ttyUSB0:921600"/>
+		    <arg name="gcs_url" value=""/>
+		    <arg name="tgt_system" value="$(arg ID)"/>
+		    <arg name="tgt_component" value="1"/>
+		</include>
+
+		<rosparam command="load" file="$(find px4_command)/config/Parameter_for_control.yaml" />
+
+		<!-- run the px4_pos_controller.cpp -->
+
+		<node pkg="px4_command" type="px4_pos_controller" name="px4_pos_controller" output="screen">
+		</node>
+
+		<!-- run the px4_pos_estimator.cpp -->
+
+		<node pkg="px4_command" type="px4_pos_estimator" name="px4_pos_estimator" output="screen">
+		       
+		</node>
+
+	</group>
+</launch>
+

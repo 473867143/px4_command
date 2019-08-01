@@ -176,6 +176,15 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "px4_pos_estimator");
     ros::NodeHandle nh("~");
 
+    string uav_name;
+
+    nh.param<string>("uav_name", uav_name, "/uav0");
+
+    if (uav_name == "/uav0")
+    {
+        uav_name = "";
+    }
+
     //读取参数表中的参数
     // 使用激光SLAM数据orVicon数据 0 for vicon， 1 for 激光SLAM
     nh.param<int>("pos_estimator/flag_use_laser_or_vicon", flag_use_laser_or_vicon, 0);
@@ -197,9 +206,6 @@ int main(int argc, char **argv)
 
     printf_param();
 
-    //nh.param<string>("pos_estimator/rigid_body_name", rigid_body_name, '/vrpn_client_node/UAV/pose');
-
-
     LowPassFilter LPF_x;
     LowPassFilter LPF_y;
     LowPassFilter LPF_z;
@@ -210,22 +216,22 @@ int main(int argc, char **argv)
 
 
     // 【订阅】cartographer估计位置
-    ros::Subscriber laser_sub = nh.subscribe<tf2_msgs::TFMessage>("/tf", 1000, laser_cb);
+    ros::Subscriber laser_sub = nh.subscribe<tf2_msgs::TFMessage>(uav_name + "/tf", 1000, laser_cb);
 
     // 【订阅】超声波的数据
-    ros::Subscriber sonic_sub = nh.subscribe<std_msgs::UInt16>("/sonic", 100, sonic_cb);
+    ros::Subscriber sonic_sub = nh.subscribe<std_msgs::UInt16>(uav_name + "/sonic", 100, sonic_cb);
 
     // 【订阅】tf mini的数据
-    ros::Subscriber tfmini_sub = nh.subscribe<sensor_msgs::Range>("/TFmini/TFmini", 100, tfmini_cb);
+    ros::Subscriber tfmini_sub = nh.subscribe<sensor_msgs::Range>(uav_name + "/TFmini/TFmini", 100, tfmini_cb);
 
     // 【订阅】optitrack估计位置
-    ros::Subscriber optitrack_sub = nh.subscribe<geometry_msgs::PoseStamped>("/vrpn_client_node/UAV/pose", 1000, optitrack_cb);
+    ros::Subscriber optitrack_sub = nh.subscribe<geometry_msgs::PoseStamped>(uav_name + "/vrpn_client_node/UAV/pose", 1000, optitrack_cb);
 
     // 【发布】无人机位置和偏航角 坐标系 ENU系
     //  本话题要发送飞控(通过mavros_extras/src/plugins/vision_pose_estimate.cpp发送), 对应Mavlink消息为VISION_POSITION_ESTIMATE(#??), 对应的飞控中的uORB消息为vehicle_vision_position.msg 及 vehicle_vision_attitude.msg
-    vision_pub = nh.advertise<geometry_msgs::PoseStamped>("/mavros/vision_pose/pose", 100);
+    vision_pub = nh.advertise<geometry_msgs::PoseStamped>(uav_name + "/mavros/vision_pose/pose", 100);
 
-    drone_state_pub = nh.advertise<px4_command::DroneState>("/px4_command/drone_state", 10);
+    drone_state_pub = nh.advertise<px4_command::DroneState>(uav_name + "/px4_command/drone_state", 10);
 
     // 用于与mavros通讯的类，通过mavros接收来至飞控的消息【飞控->mavros->本程序】
     state_from_mavros _state_from_mavros;

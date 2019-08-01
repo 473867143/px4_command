@@ -52,7 +52,7 @@ px4_command::ControlOutput _ControlOutput;
 px4_command::AttitudeReference _AttitudeReference;           //位置控制器输出，即姿态环参考量
 float cur_time;
 px4_command::Topic_for_log _Topic_for_log;                  //用于日志记录的topic
-
+string uav_name;
 float Takeoff_height;                                       //起飞高度
 float Disarm_height;                                        //自动上锁高度
 float Use_accel;                                            // 1 for use the accel command
@@ -112,16 +112,24 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "px4_pos_controller");
     ros::NodeHandle nh("~");
 
+    nh.param<string>("uav_name", uav_name, "/uav0");
+
+    if (uav_name == "/uav0")
+    {
+        uav_name = "";
+    }
+
     //【订阅】指令
     // 本话题来自根据需求自定义的上层模块，比如track_land.cpp 比如move.cpp
-    ros::Subscriber Command_sub = nh.subscribe<px4_command::ControlCommand>("/px4_command/control_command", 10, Command_cb);
+    ros::Subscriber Command_sub = nh.subscribe<px4_command::ControlCommand>(uav_name + "/px4_command/control_command", 10, Command_cb);
 
     //【订阅】无人机当前状态
     // 本话题来自根据需求自定px4_pos_estimator.cpp
-    ros::Subscriber drone_state_sub = nh.subscribe<px4_command::DroneState>("/px4_command/drone_state", 10, drone_state_cb);
+    ros::Subscriber drone_state_sub = nh.subscribe<px4_command::DroneState>(uav_name + "/px4_command/drone_state", 10, drone_state_cb);
 
     // 发布log消息至ground_station.cpp
-    ros::Publisher log_pub = nh.advertise<px4_command::Topic_for_log>("/px4_command/topic_for_log", 10);
+    ros::Publisher log_pub = nh.advertise<px4_command::Topic_for_log>(uav_name + "/px4_command/topic_for_log", 10);
+
 
     // 参数读取
     nh.param<float>("Takeoff_height", Takeoff_height, 1.0);
@@ -827,6 +835,8 @@ void printf_param()
 
     cout << "disturbance_start_time: "<< disturbance_start_time<<" [s] "<<endl;
     cout << "disturbance_end_time: "<< disturbance_end_time<<" [s] "<<endl;
+
+    cout << "uav_name: "<<uav_name<<endl;
     
     
 

@@ -96,12 +96,21 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "ground_station");
     ros::NodeHandle nh("~");
 
+    string uav_name;
+
+    nh.param<string>("uav_name", uav_name, "/uav0");
+
+    if (uav_name == "/uav0")
+    {
+        uav_name = "";
+    }
+
     // 【订阅】optitrack估计位置
-    ros::Subscriber optitrack_sub = nh.subscribe<geometry_msgs::PoseStamped>("/vrpn_client_node/UAV/pose", 10, optitrack_cb);
+    ros::Subscriber optitrack_sub = nh.subscribe<geometry_msgs::PoseStamped>(uav_name + "/vrpn_client_node/UAV/pose", 10, optitrack_cb);
 
-    ros::Subscriber log_sub = nh.subscribe<px4_command::Topic_for_log>("/px4_command/topic_for_log", 10, log_cb);
+    ros::Subscriber log_sub = nh.subscribe<px4_command::Topic_for_log>(uav_name + "/px4_command/topic_for_log", 10, log_cb);
 
-    ros::Subscriber attitude_target_sub = nh.subscribe<mavros_msgs::AttitudeTarget>("/mavros/setpoint_raw/target_attitude", 10,att_target_cb);
+    ros::Subscriber attitude_target_sub = nh.subscribe<mavros_msgs::AttitudeTarget>(uav_name + "/mavros/setpoint_raw/target_attitude", 10,att_target_cb);
 
     // 频率
     ros::Rate rate(10.0);

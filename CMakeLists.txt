@@ -124,6 +124,10 @@ add_executable(move src/Utilities/move.cpp)
 add_dependencies(move px4_command_gencpp)
 target_link_libraries(move ${catkin_LIBRARIES})
 
+add_executable(multiple_move src/Utilities/multiple_move.cpp)
+add_dependencies(multiple_move px4_command_gencpp)
+target_link_libraries(multiple_move ${catkin_LIBRARIES})
+
 add_executable(OptiTrackTest src/Utilities/OptiTrackTest.cpp)
 add_dependencies(OptiTrackTest px4_command_gencpp)
 target_link_libraries(OptiTrackTest ${catkin_LIBRARIES})

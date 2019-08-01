@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="uav2">
+
+		<!-- run the px4_pos_controller.cpp -->
+
+		<node pkg="px4_command" type="px4_pos_controller" name="px4_pos_controller" output="screen">
+			<rosparam command="load" file="$(find px4_command)/config/Parameter_for_control.yaml" />
+			<rosparam param="uav_name">"/uav2"</rosparam>
+		</node>
+
+		<!-- run the px4_pos_estimator.cpp -->
+
+		<node pkg="px4_command" type="px4_pos_estimator" name="px4_pos_estimator" output="screen">
+		       <rosparam command="load" file="$(find px4_command)/config/Parameter_for_control.yaml" />
+			<rosparam param="uav_name">"/uav2"</rosparam>
+		</node>
+
+	</group>
+</launch>
+
