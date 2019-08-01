@@ -1,6 +1,6 @@
 ## parameter for px4_pos_controller.cpp
 
-uav_name: /uav1
+uav_name: /uav0
 ## 起飞高度
 Takeoff_height : 1.0
 Disarm_height : 0.2
