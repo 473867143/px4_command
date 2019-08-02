@@ -104,6 +104,11 @@ target_link_libraries(ground_station OptiTrackFeedbackRigidBody)
 
 ###### Utilities File ##########
 
+add_executable(acc src/Utilities/acc.cpp)
+add_dependencies(acc px4_command_gencpp)
+target_link_libraries(acc ${catkin_LIBRARIES})
+
+
 add_executable(setpoint_track src/Utilities/setpoint_track.cpp)
 add_dependencies(setpoint_track px4_command_gencpp)
 target_link_libraries(setpoint_track ${catkin_LIBRARIES})
